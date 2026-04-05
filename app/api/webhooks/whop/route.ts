@@ -60,6 +60,10 @@ export async function POST(request: NextRequest) {
 
   // Get webhook secret from config (DB or env)
   const webhookSecret = await getConfig("whop_webhook_secret");
+  if (!webhookSecret) {
+    console.error("[Webhook] Webhook secret not configured");
+    return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 });
+  }
 
   // Verify the webhook signature
   const isValid = await verifyWebhookSignature(
@@ -69,7 +73,7 @@ export async function POST(request: NextRequest) {
       "webhook-signature": request.headers.get("webhook-signature"),
       "webhook-timestamp": request.headers.get("webhook-timestamp"),
     },
-    webhookSecret ?? undefined,
+    webhookSecret,
   );
   if (!isValid) {
     console.error("[Webhook] Invalid signature");
