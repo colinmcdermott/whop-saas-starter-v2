@@ -116,6 +116,46 @@ See [webhooks.md](./references/webhooks.md) for full details.
 - Client: `<PlanGate plan={session.plan} minimum="starter">` (pass plan from server parent)
 - Plan hierarchy is auto-derived from key order in `definePlans()`
 
+## CLI Management (whop-kit)
+
+This project was scaffolded with `create-whop-kit` and can be managed with `whop-kit`:
+
+### Add pricing plans
+```bash
+npx whop-kit add plans
+# Walks through: tier count → free tier → billing intervals → pricing
+# Creates products + plans on Whop via API
+# Writes plan IDs to .env.local (NEXT_PUBLIC_WHOP_{KEY}_PLAN_ID)
+```
+
+### Add email
+```bash
+npx whop-kit add email
+# Choose Resend or SendGrid → enter API key → writes to .env.local
+```
+
+### Add analytics
+```bash
+npx whop-kit add analytics
+# Choose PostHog / Google Analytics / Plausible → enter ID → writes to .env.local
+```
+
+### Deploy / redeploy
+```bash
+npx whop-kit deploy
+# Deploys to Vercel, configures Whop, pushes env vars
+```
+
+### Other commands
+```bash
+npx whop-kit status     # check project health (what's configured vs missing)
+npx whop-kit env         # view env vars (masked by default, --reveal for values)
+npx whop-kit catalog     # list all available services and templates
+npx whop-kit open whop   # open Whop dashboard
+npx whop-kit open vercel # open Vercel dashboard
+npx whop-kit upgrade     # update whop-kit dependency to latest
+```
+
 ## File Placement Rules
 
 | What you're adding | Where it goes |
